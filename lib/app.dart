@@ -1,0 +1,1 @@
+//Tugasnya adalah mendefinisikan struktur global aplikasi seperti tema (warna gelap/terang), bahasa (lokalisasi), dan sistem navigasi/rute (routes). Jadi, main.dart fokus pada inisialisasi aplikasi (buka database, cek login), lalu dia langsung mengoper tugas ke app.dart untuk menampilkan visual pertama kali.
