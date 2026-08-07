@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 
-class HalamanSatu extends StatelessWidget {
+class HalamanSatu extends StatefulWidget {
   const HalamanSatu({super.key});
+  @override
+  State<HalamanSatu> createState() => _HalamanSatuState();
+}
+
+class _HalamanSatuState extends State<HalamanSatu> {
+  // this is allow to access the textfield  text
+  final TextEditingController textPengontrolnya = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Navigator Page Push and Pop',
-          style: TextStyle(fontWeight: FontWeight.w300, color: Colors.blue),
+          'Navigator Push and Pop ',
+          style: TextStyle(fontWeight: FontWeight.w300, color: Colors.blue, fontSize: 25),
         ),
       ),
       body: Center(
@@ -17,17 +24,38 @@ class HalamanSatu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Andre Learn how to Make Two Page With Navigator Push',
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 18),
+              'Andre Learn How to Make and Use Navigator to switch from page 1 to page 2 ',
+              style: TextStyle(fontSize: 15),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 170),
+            const SizedBox(height: 30),
+
+            const SizedBox(height: 20),
+
+            // for textfield
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: TextField(
+                controller: textPengontrolnya,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.lightBlue,
+                ),
+              ),
+            ),
+
+            // tombol untuk switch dari page 1 to page 2 menggunakan ElevatedButton
             ElevatedButton(
-              child: const Text('Masuk Ke Halaman-2'),
+              child: Text('Pindah Ke halaman-2'),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HalamanDua()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HalamanDua(nama: textPengontrolnya.text)),
+                );
               },
             ),
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -36,30 +64,38 @@ class HalamanSatu extends StatelessWidget {
 }
 
 class HalamanDua extends StatelessWidget {
-  const HalamanDua({super.key});
+  const HalamanDua({super.key, required this.nama});
+  final String nama;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Kembali Ke halaman Utama ',
-          style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20),
-          textAlign: TextAlign.left,
-        ),
-      ),
-
+      appBar: AppBar(title: const Text('Ini adalah Halaman Dua')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Selamat datang di Halaman Kedua'),
+            Text(
+              nama,
+              style: TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+
+            const Text(
+              'Selamat , Kamu Berhasil berpindah dari halaman ke-1 ke halaman-2',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blue),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+
+            // make a button for previous page is HalamanSatu() page.
             ElevatedButton(
-              child: const Text('Kembali Ke Halaman-1'),
+              child: const Text('Kembali ke Halaman-1'),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
+            const SizedBox(height: 40),
           ],
         ),
       ),
