@@ -85,14 +85,17 @@ class _CameraScreenState extends State<CameraScreen> {
               ),
             ),
 
-            Positioned.fill(child: CustomPaint(painter: PosePainter(
-              Points: [
-                const Offset(100, 200),
-                const Offset(150, 200),
-                const Offset(200, 300)
-                
-              ]
-            ))),
+            Positioned.fill(
+              child: CustomPaint(
+                painter: PosePainter(
+                  points: [
+                    const Offset(100, 200), // Masuk ke loker No. 0 -> Points[0]
+                    const Offset(150, 200), // Masuk ke loker No. 1 -> Points[1]
+                    const Offset(200, 300), // Masuk ke loker No. 2 -> Points[2]
+                  ],
+                ),
+              ),
+            ),
 
             Positioned(
               top: 650,
