@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class PosePainter extends CustomPainter {
   // variable penampung data dari luar
-  final List<Offset> Points;
+  final List<Offset> points;
 
   // constructor (colokan inputnya)
-  PosePainter({required this.Points});
+  PosePainter({required this.points});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -19,11 +19,16 @@ class PosePainter extends CustomPainter {
       ..color = Colors.white
       ..strokeWidth = 3;
 
-    final Paint spidolPointBlue = Paint()..color = Colors.blue;
+    final Paint spidolPointBlue = Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 5;
 
-    for (final PointBullet in Points) {
-      canvas.drawCircle(PointBullet, 10, spidolPointBlue);
+    for (final pointBullet in points) {
+      canvas.drawCircle(pointBullet, 10, spidolPointBlue);
     }
+
+    canvas.drawLine(points[0], points[1], spidolPointBlue);
+    canvas.drawLine(points[1], points[2], spidolPointBlue);
   }
 
   @override
