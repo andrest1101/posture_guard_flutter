@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:posture_guard_flutter/main.dart';
 import 'package:posture_guard_flutter/painters/pose_painter.dart';
 import 'package:posture_guard_flutter/screens/summary_screen.dart';
+import 'package:posture_guard_flutter/services/pose_detector_service.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -14,6 +15,12 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   CameraController? controlTheCamera;
   int selectedCameraIndex = 0;
+
+  // variable for pose_detector_service
+  final PoseDetectorService _poseDetectorService = PoseDetectorService();
+
+  // list of detection result coordinates
+  List<Offset> _posePoints = [];
 
   @override
   void initState() {
@@ -33,6 +40,22 @@ class _CameraScreenState extends State<CameraScreen> {
         return;
       }
       setState(() {});
+
+      controlTheCamera!.startImageStream((CameraImage image) async {
+        final List<Offset> points = await _poseDetectorService.detectPose(
+          cameraImage: image,
+          sensorOrientation: controlTheCamera!.description.sensorOrientation,
+        );
+
+        if (mounted) {
+          setState(() {
+            _posePoints = points;
+          });
+
+          // print to terminal
+          print("=== JUMLAH TITIK TERDETEKSI: ${points.length}");
+        }
+      });
     });
   }
 
@@ -80,19 +103,23 @@ class _CameraScreenState extends State<CameraScreen> {
                 child: SizedBox(
                   width: controlTheCamera!.value.previewSize!.height,
                   height: controlTheCamera!.value.previewSize!.width,
-                  child: CameraPreview(controlTheCamera!),
-                ),
-              ),
-            ),
 
-            Positioned.fill(
-              child: CustomPaint(
-                painter: PosePainter(
-                  points: [
-                    const Offset(100, 200), // Masuk ke loker No. 0 -> Points[0]
-                    const Offset(150, 200), // Masuk ke loker No. 1 -> Points[1]
-                    const Offset(200, 300), // Masuk ke loker No. 2 -> Points[2]
-                  ],
+                  // wrap with stack in here
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // old video
+                      CameraPreview(controlTheCamera!),
+
+                      Transform.scale(
+                        // Kalau selectedCameraIndex == 1 (Kamera Depan), balikkan kanvasnya (-1)
+                        // Kalau 0 (Kamera Belakang), biarkan normal (1)
+                        scaleX: selectedCameraIndex == 1 ? -1 : 1,
+                        alignment: Alignment.center,
+                        child: CustomPaint(painter: PosePainter(points: _posePoints)),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

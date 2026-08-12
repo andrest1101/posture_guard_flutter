@@ -21,5 +21,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-int umur = 20;
