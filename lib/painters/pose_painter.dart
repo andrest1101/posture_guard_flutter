@@ -27,8 +27,13 @@ class PosePainter extends CustomPainter {
       canvas.drawCircle(pointBullet, 10, spidolPointBlue);
     }
 
-    canvas.drawLine(points[0], points[1], spidolPointBlue);
-    canvas.drawLine(points[1], points[2], spidolPointBlue);
+    if (points.length >= 6) {
+      canvas.drawLine(points[0], points[1], spidolPointBlue);
+      canvas.drawLine(points[1], points[2], spidolPointBlue);
+      canvas.drawLine(points[2], points[3], spidolPointBlue);
+      canvas.drawLine(points[3], points[4], spidolPointBlue);
+      canvas.drawLine(points[4], points[5], spidolPointBlue);
+    }
   }
 
   @override
