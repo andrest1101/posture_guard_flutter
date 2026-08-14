@@ -14,20 +14,6 @@ class PoseDetectorService {
     required CameraImage cameraImage,
     required int sensorOrientation,
   }) async {
-    // step 1: conversion to InputImage
-
-    // final InputImage inputImage = InputImage.fromBytes(
-    //   bytes: cameraImage.planes[0].bytes,
-    //   metadata: InputImageMetadata(
-    //     size: Size(cameraImage.width.toDouble(), cameraImage.height.toDouble()),
-    //     rotation:
-    //         InputImageRotationValue.fromRawValue(sensorOrientation) ??
-    //         InputImageRotation.rotation0deg,
-    //     format: InputImageFormat.nv21,
-    //     bytesPerRow: cameraImage.planes[0].bytesPerRow,
-    //   ),
-    // );
-
     //prepare an empty container for sewing data
     final WriteBuffer allBytes = WriteBuffer();
 

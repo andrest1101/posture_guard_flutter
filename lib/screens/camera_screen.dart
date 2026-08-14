@@ -4,6 +4,7 @@ import 'package:posture_guard_flutter/main.dart';
 import 'package:posture_guard_flutter/painters/pose_painter.dart';
 import 'package:posture_guard_flutter/screens/summary_screen.dart';
 import 'package:posture_guard_flutter/services/pose_detector_service.dart';
+import 'package:posture_guard_flutter/utilities/angle_calculator.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -21,6 +22,10 @@ class _CameraScreenState extends State<CameraScreen> {
 
   // list of detection result coordinates
   List<Offset> _posePoints = [];
+
+  // varibale for angle_calculator
+  String _statusPosture = "Mendeteksi...";
+  double _nilaiSudut = 0.0;
 
   @override
   void initState() {
@@ -48,12 +53,17 @@ class _CameraScreenState extends State<CameraScreen> {
         );
 
         if (mounted) {
-          setState(() {
-            _posePoints = points;
-          });
+          // minimum logic point 5
+          if (points.length >= 5) {
+            final double sudutBaru = hitungSudut(points[0], points[2], points[3]);
+            final String statusBaru = klasifikasiPostur(sudutBaru);
 
-          // print to terminal
-          print("=== JUMLAH TITIK TERDETEKSI: ${points.length}");
+            setState(() {
+              _posePoints = points;
+              _nilaiSudut = sudutBaru;
+              _statusPosture = statusBaru;
+            });
+          }
         }
       });
     });
