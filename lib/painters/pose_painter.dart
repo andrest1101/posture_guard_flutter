@@ -4,35 +4,38 @@ class PosePainter extends CustomPainter {
   // variable penampung data dari luar
   final List<Offset> points;
 
+  // variable penampung status dari luar
+  String statusBaru;
+
+  // variable baru untuk ganti ganti warna sesuai dengan logika klasifikasi angle_calculator.dart
+  Color warnaAktif = Colors.green;
+
   // constructor (colokan inputnya)
-  PosePainter({required this.points});
+  PosePainter({required this.points, required this.statusBaru});
 
   @override
   void paint(Canvas canvas, Size size) {
-    // speedol point green
-    final Paint spidolPointHijau = Paint()
-      ..color = Colors.green
-      ..strokeWidth = 10
-      ..strokeCap = StrokeCap.round;
+    // logika untuk menentukan warna spidolPoint berdasarkan nilai klasifikasi postur
+    if (statusBaru == "Perlu diperbaiki") {
+      warnaAktif = Colors.yellow;
+    } else {
+      warnaAktif = Colors.red;
+    }
 
-    final Paint spidolPointWhite = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 3;
-
-    final Paint spidolPointBlue = Paint()
-      ..color = Colors.blue
+    final Paint spidolPoint = Paint()
+      ..color = warnaAktif
       ..strokeWidth = 5;
 
     for (final pointBullet in points) {
-      canvas.drawCircle(pointBullet, 10, spidolPointBlue);
+      canvas.drawCircle(pointBullet, 10, spidolPoint);
     }
 
     if (points.length >= 6) {
-      canvas.drawLine(points[0], points[1], spidolPointBlue);
-      canvas.drawLine(points[1], points[2], spidolPointBlue);
-      canvas.drawLine(points[2], points[3], spidolPointBlue);
-      canvas.drawLine(points[3], points[4], spidolPointBlue);
-      canvas.drawLine(points[4], points[5], spidolPointBlue);
+      canvas.drawLine(points[0], points[1], spidolPoint);
+      canvas.drawLine(points[1], points[2], spidolPoint);
+      canvas.drawLine(points[2], points[3], spidolPoint);
+      canvas.drawLine(points[3], points[4], spidolPoint);
+      canvas.drawLine(points[4], points[5], spidolPoint);
     }
   }
 

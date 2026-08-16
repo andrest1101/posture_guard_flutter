@@ -55,7 +55,7 @@ class _CameraScreenState extends State<CameraScreen> {
         if (mounted) {
           // minimum logic point 5
           if (points.length >= 5) {
-            final double sudutBaru = hitungSudut(points[0], points[2], points[3]);
+            final double sudutBaru = hitungSudut(points[0], points[2], points[4]);
             final String statusBaru = klasifikasiPostur(sudutBaru);
 
             setState(() {
@@ -126,7 +126,7 @@ class _CameraScreenState extends State<CameraScreen> {
                         // Kalau 0 (Kamera Belakang), biarkan normal (1)
                         scaleX: selectedCameraIndex == 1 ? -1 : 1,
                         alignment: Alignment.center,
-                        child: CustomPaint(painter: PosePainter(points: _posePoints)),
+                        child: CustomPaint(painter: PosePainter(points: _posePoints, statusBaru: _statusPosture )),
                       ),
                     ],
                   ),
