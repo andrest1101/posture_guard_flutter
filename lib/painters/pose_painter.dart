@@ -18,8 +18,10 @@ class PosePainter extends CustomPainter {
     // logika untuk menentukan warna spidolPoint berdasarkan nilai klasifikasi postur
     if (statusBaru == "Perlu diperbaiki") {
       warnaAktif = Colors.yellow;
-    } else {
+    } else if (statusBaru == "Buruk") {
       warnaAktif = Colors.red;
+    } else {
+      warnaAktif;
     }
 
     final Paint spidolPoint = Paint()

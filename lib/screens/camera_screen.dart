@@ -25,13 +25,15 @@ class _CameraScreenState extends State<CameraScreen> {
 
   // varibale for angle_calculator
   String _statusPosture = "Mendeteksi...";
-  double _nilaiSudut = 0.0;
+  double _nilaiSudut = 0;
 
   @override
   void initState() {
     super.initState();
     initCamera();
   }
+
+  bool _isProcessing = false;
 
   // for camera initialization
 
@@ -47,6 +49,8 @@ class _CameraScreenState extends State<CameraScreen> {
       setState(() {});
 
       controlTheCamera!.startImageStream((CameraImage image) async {
+        if (_isProcessing) return;
+        _isProcessing = true;
         final List<Offset> points = await _poseDetectorService.detectPose(
           cameraImage: image,
           sensorOrientation: controlTheCamera!.description.sensorOrientation,
@@ -56,6 +60,7 @@ class _CameraScreenState extends State<CameraScreen> {
           // minimum logic point 5
           if (points.length >= 5) {
             final double sudutBaru = hitungSudut(points[0], points[2], points[4]);
+            print("=== SUDUT: $sudutBaru | STATUS: ${klasifikasiPostur(sudutBaru)}");
             final String statusBaru = klasifikasiPostur(sudutBaru);
 
             setState(() {
@@ -64,6 +69,7 @@ class _CameraScreenState extends State<CameraScreen> {
               _statusPosture = statusBaru;
             });
           }
+          _isProcessing = false;
         }
       });
     });
@@ -126,7 +132,9 @@ class _CameraScreenState extends State<CameraScreen> {
                         // Kalau 0 (Kamera Belakang), biarkan normal (1)
                         scaleX: selectedCameraIndex == 1 ? -1 : 1,
                         alignment: Alignment.center,
-                        child: CustomPaint(painter: PosePainter(points: _posePoints, statusBaru: _statusPosture )),
+                        child: CustomPaint(
+                          painter: PosePainter(points: _posePoints, statusBaru: _statusPosture),
+                        ),
                       ),
                     ],
                   ),
@@ -153,11 +161,29 @@ class _CameraScreenState extends State<CameraScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SummaryScreen(Duration: 120, GoodPosture: 130),
+                        builder: (context) => const SummaryScreen(duration: 120, goodPosture: 130),
                       ),
                     );
                   },
                   child: const Text('Finish'),
+                ),
+              ),
+            ),
+
+            // display status text on screen
+            Positioned(
+              top: 50,
+              left: 20,
+              child: Text(
+                'Status Postur: $_statusPosture',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: _statusPosture == "Baik"
+                      ? Colors.green
+                      : _statusPosture == "Perlu diperbaiki"
+                      ? Colors.yellow
+                      : Colors.red,
                 ),
               ),
             ),

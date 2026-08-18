@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:posture_guard_flutter/screens/home_screen.dart';
 
 class SummaryScreen extends StatelessWidget {
-  final int Duration;
-  final int GoodPosture;
-  const SummaryScreen({super.key, required this.Duration, required this.GoodPosture});
+  final int duration;
+  final int goodPosture;
+  const SummaryScreen({super.key, required this.duration, required this.goodPosture});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class SummaryScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Selamat Kamu berhasil masuk ke page SummaryScreen, dan kami menangkap informasi dari penggunaan aplikasi PostureGuard adalah: Duration: $Duration Detik dan Goodposture: $GoodPosture Detik (Perfect!)',
+              'Selamat Kamu berhasil masuk ke page SummaryScreen, dan kami menangkap informasi dari penggunaan aplikasi PostureGuard adalah: duration: $duration Detik dan Goodposture: $goodPosture Detik (Perfect!)',
               style: TextStyle(fontSize: 16, color: Colors.lightBlue),
               textAlign: TextAlign.center,
             ),
